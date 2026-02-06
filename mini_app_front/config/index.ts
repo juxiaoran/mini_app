@@ -9,6 +9,7 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
     projectName: 'mini_app_front',
     date: '2026-2-6',
     designWidth: 750,
+    baseUrl: process.env.BASE_URL,
     deviceRatio: {
       640: 2.34 / 2,
       750: 1,

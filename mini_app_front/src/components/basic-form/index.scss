@@ -1,0 +1,32 @@
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-bottom: 36rpx;
+}
+
+.form-label {
+  font-size: 26rpx;
+  color: #888;
+}
+
+.form-control {
+  min-height: 72rpx;
+
+  padding: 12rpx 4rpx;
+
+  border: none;
+  border-bottom: 2rpx solid #e5e5e5;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+
+  font-size: 30rpx;
+  color: #222;
+}
+
+.form-control:focus-within {
+  border-bottom-color: #1677ff;
+}

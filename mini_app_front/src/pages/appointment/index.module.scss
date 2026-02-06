@@ -1,0 +1,30 @@
+.index {
+  display: flex;
+  flex-direction: column;
+  gap: 50rpx;
+  padding: 20rpx;
+}
+
+.placeholder {
+  color: #999;
+}
+
+.inputValue {
+  color: #222;
+}
+
+.footer-container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-btn {
+  height: 70rpx;
+  margin: 0 90rpx;
+  background-color: #222;
+  color: #fff;
+  border-radius: 35rpx;
+}

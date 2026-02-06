@@ -13,11 +13,15 @@ import lombok.Data;
 public class BaseResp<T> {
     private int code;
 
-    private String msg;
+    private String message;
 
     private T data;
 
     public static <T> BaseResp<T> success(T data) {
         return new BaseResp<>(200, "success", data);
+    }
+
+    public static <T> BaseResp<T> error(int code, String msg) {
+        return new BaseResp<>(code, msg, null);
     }
 }

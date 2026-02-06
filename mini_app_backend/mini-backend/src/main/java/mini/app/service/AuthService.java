@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mini.app.common.BaseResp;
 import mini.app.dto.UserLoginDto;
 import mini.app.entity.AppUser;
 import mini.app.mapper.AppUserMapper;
+import mini.app.util.JwtUtil;
 import mini.app.vo.LoginResp;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,28 +26,23 @@ public class AuthService {
     private final AppUserMapper appUserMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginResp login(UserLoginDto loginDto) {
+    public BaseResp<LoginResp> login(UserLoginDto loginDto) {
         var queryUser = Wrappers.<AppUser>lambdaQuery()
                 .eq(AppUser::getTelephone, loginDto.getTelephone());
 
         var user = appUserMapper.selectOne(queryUser);
         if (user == null) {
             log.error("user not found, telephone: {}", loginDto.getUsername());
-            return null;
+            return BaseResp.error(404, "Login failed, try again later");
         }
 
         if (!"123456".equals(loginDto.getVerificationCode())) {
             log.error("verification code not match, telephone: {}", loginDto.getUsername());
-            return null;
+            return BaseResp.error(404, "Login failed, try again later");
         }
 
-        var token = "Bearer " + UUID.randomUUID().toString();
-        var expireTime = LocalDateTime.now().plusDays(7);
+        var token = JwtUtil.generateToken(user.getId());
 
-        user.setToken(token);
-        user.setTokenExpiration(expireTime);
-        appUserMapper.updateById(user);
-
-        return new LoginResp(token, expireTime.toInstant(java.time.ZoneOffset.UTC).toEpochMilli());
+        return BaseResp.success(new LoginResp(token, JwtUtil.EXPIRATION_MS));
     }
 }

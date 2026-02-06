@@ -30,6 +30,6 @@ public class AuthController {
      */
     @PostMapping("/login")
     public BaseResp<LoginResp> login(@RequestBody UserLoginDto loginDto) {
-        return BaseResp.success(authService.login(loginDto));
+        return authService.login(loginDto);
     }
 }
