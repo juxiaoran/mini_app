@@ -15,11 +15,11 @@ export default defineAppConfig({
     list: [
       {
         pagePath: "pages/home/index",
-        text: "首页",
+        text: "Home",
       },
       {
         pagePath: "pages/mine/appointment/index",
-        text: "预约",
+        text: "Appointment",
       },
     ],
   },

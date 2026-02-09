@@ -1,0 +1,14 @@
+.page {
+    background-color: #f5f5f5;
+}
+
+.appointment-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10rpx;
+  background-color: #fff;
+  gap: 10rpx;
+  margin: 10rpx;
+  border-radius: 10rpx;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}

@@ -13,7 +13,7 @@ import lombok.Data;
 public class AppointmentDto {
     private String serviceName;
 
-    private LocalDate appointmentDate;
+    private LocalDate appointDate;
 
     private LocalTime timeSlot;
 }

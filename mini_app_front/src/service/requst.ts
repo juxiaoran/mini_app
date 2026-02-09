@@ -25,7 +25,7 @@ interface ResponseWrapper<T> {
 export async function request<T = any>(options: RequestOptions<T>): Promise<T> {
   const { url, data, method = "GET" } = options;
   const token = getToken();
-  const baseUrl = process.env.TARO_APP_BASE_URL;
+  const baseUrl = process.env.TARO_APP_BASE_URL ;
 
   try {
     const res = await Taro.request<ResponseWrapper<T>>({

@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS mini_app;
+use mini_app;
+
 CREATE TABLE IF NOT EXISTS app_user
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -11,8 +14,8 @@ CREATE TABLE IF NOT EXISTS app_user
 ) character set utf8mb4
   collate utf8mb4_unicode_ci;
 
-insert into app_user (username, password, telephone)
-values ('david', '123456', '15300000000');
+insert into app_user (id, username, password, telephone)
+values (1, 'david', '123456', '15300000000');
 
 CREATE TABLE `appointment`
 (
@@ -26,7 +29,7 @@ CREATE TABLE `appointment`
         ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
 
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_user_date_slot` (`user_id`, `appoint_date`, `time_slot`),
+    UNIQUE KEY `uk_user_date_slot` (`user_id`,`service_name`, `appoint_date`, `time_slot`),
     KEY `idx_user_id` (`user_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='Appointment table';

@@ -8,12 +8,6 @@ import { post } from "@/service/requst";
 import Taro from "@tarojs/taro";
 import common from "@/util/common";
 
-interface Appointment {
-  serviceName: string;
-  appointmentDate: string;
-  timeSlot: string;
-}
-
 export default function Index() {
   useLoad(() => {
     console.log("Page loaded.");
@@ -38,10 +32,38 @@ export default function Index() {
   const [date, setDate] = useState("");
   const [timeSlot, setTimeSlot] = useState(-1);
 
+  const [errors, setErrors] = useState({
+    serviceName: "",
+    date: "",
+    timeSlot: "",
+  });
+
+  function validate() {
+    const err: any = {};
+
+    if (!serviceName) {
+      err.serviceName = "Service name is required";
+    }
+
+    if (!date) {
+      err.date = "Please select date";
+    }
+
+    if (timeSlot < 0) {
+      err.timeSlot = "Please select time slot";
+    }
+
+    setErrors(err);
+
+    return Object.keys(err).length === 0;
+  }
+
   const handleSubmit = () => {
+    if (!validate()) return;
+
     const appointment: Appointment = {
       serviceName,
-      appointmentDate: date,
+      appointDate: date,
       timeSlot: timeSlots[timeSlot],
     };
 
@@ -78,31 +100,55 @@ export default function Index() {
       footerProps={{ height: 64, backgroundColor: "#fff" }}
     >
       <View className="index">
-        <FormItem label="Service Name">
+        <FormItem
+          label="Service Name"
+          warning={!!errors.serviceName}
+          warnMsg={errors.serviceName}
+        >
           <Input
             placeholder="please input service name"
             value={serviceName}
-            onInput={(e) => setServiceName(e.detail.value)}
+            onInput={(e) => {
+              setServiceName(e.detail.value);
+              if (e.detail.value) {
+                errors.serviceName = "";
+              }
+            }}
           />
         </FormItem>
 
-        <FormItem label="Date">
+        <FormItem label="Date" warning={!!errors.date} warnMsg={errors.date}>
           <Picker
             mode="date"
             value={date}
-            onChange={(e) => setDate(e.detail.value)}
+            onChange={(e) => {
+              setDate(e.detail.value);
+              if (e.detail.value) {
+                errors.date = "";
+              }
+            }}
           >
             <view className={date ? "inputValue" : "placeholder"}>
               {date || "please select date"}
             </view>
           </Picker>
         </FormItem>
-        <FormItem label="Time Slot">
+        <FormItem
+          label="Time Slot"
+          warning={!!errors.timeSlot}
+          warnMsg={errors.timeSlot}
+        >
           <Picker
             mode="selector"
             value={timeSlot === -1 ? undefined : timeSlot}
             range={timeSlots}
-            onChange={(e) => setTimeSlot(Number(e.detail.value))}
+            onChange={(e) => {
+              var val = Number(e.detail.value);
+              setTimeSlot(val);
+              if (val >= 0) {
+                errors.timeSlot = "";
+              }
+            }}
           >
             <View className={timeSlot === -1 ? "placeholder" : "inputValue"}>
               {timeSlot === -1 ? "please select slot" : timeSlots[timeSlot]}

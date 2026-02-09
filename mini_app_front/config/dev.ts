@@ -7,4 +7,5 @@ export default {
   },
   mini: {},
   h5: {},
+  BASE_URL: "http://192.168.1.5:19090",
 } satisfies UserConfigExport<"webpack5">;

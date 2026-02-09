@@ -22,7 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
-    public final static ThreadLocal<String> USERNAME = new ThreadLocal<>();
+    public final static ThreadLocal<Long> USERNAME = new ThreadLocal<>();
 
     private final ObjectMapper objectMapper;
 
@@ -44,7 +44,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         try {
             Long userId = JwtUtil.parseToken(token);
-            USERNAME.set(userId.toString());
+            USERNAME.set(userId);
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
             response.getWriter().write(objectMapper.writeValueAsString(BaseResp.error(401, "Unauthorized")));

@@ -6,9 +6,17 @@ interface Props {
   label: string;
   children: ReactNode;
   required?: boolean;
+  warnMsg?: string;
+  warning?: boolean;
 }
 
-export default function FormItem({ label, children, required }: Props) {
+export default function FormItem({
+  label,
+  children,
+  required,
+  warning,
+  warnMsg,
+}: Props) {
   return (
     <View className="form-item">
       <View className="form-label">
@@ -17,6 +25,7 @@ export default function FormItem({ label, children, required }: Props) {
       </View>
 
       <View className="form-control">{children}</View>
+      {warning && <View className="warning">{warnMsg}</View>}
     </View>
   );
 }
