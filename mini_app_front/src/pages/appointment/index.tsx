@@ -3,10 +3,13 @@ import { useLoad } from "@tarojs/taro";
 import { useState } from "react";
 import FormItem from "@/components/basic-form/form-item";
 import BasicPage from "@/components/basic-page";
-import "./index.module.scss";
 import { post } from "@/service/requst";
 import Taro from "@tarojs/taro";
 import common from "@/util/common";
+import { APP_EVENTS } from "@/util/app_events";
+
+import "./index.module.scss";
+
 
 export default function Index() {
   useLoad(() => {
@@ -75,6 +78,7 @@ export default function Index() {
           title: res.message || "Successfully created",
           icon: "none",
         });
+        Taro.eventCenter.trigger(APP_EVENTS.appointment.created);
       },
       handleFail: (res) => {
         Taro.showToast({

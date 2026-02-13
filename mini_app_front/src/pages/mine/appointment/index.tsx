@@ -1,14 +1,22 @@
 import { View, Text, ScrollView } from "@tarojs/components";
 import { useLoad, usePullDownRefresh, useReachBottom } from "@tarojs/taro";
-import "./index.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { get } from "@/service/requst";
 import Taro from "@tarojs/taro";
+import { APP_EVENTS } from "@/util/app_events";
+import "./index.scss";
 
 export default function Index() {
   useLoad(() => {
-    loadData(1, true);
+    refresh();
   });
+
+  useEffect(() => {
+    Taro.eventCenter.on(APP_EVENTS.appointment.created, refresh);
+    return () => {
+      Taro.eventCenter.off(APP_EVENTS.appointment.created, refresh);
+    };
+  }, []);
 
   useReachBottom(() => {
     if (hasMore && !loading) {
@@ -19,7 +27,7 @@ export default function Index() {
   usePullDownRefresh(() => {
     setHasMore(true);
     setList([]);
-    loadData(1, true);
+    refresh();
     Taro.stopPullDownRefresh();
   });
 
@@ -28,6 +36,10 @@ export default function Index() {
   const [pageSize] = useState(10);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const refresh = () => {
+    loadData(1, true);
+  };
 
   const loadData = async (pageNo = 1, isRefresh = false) => {
     if (loading) return;
@@ -73,9 +85,12 @@ export default function Index() {
             <Text className="time-slot">{item.timeSlot}</Text>
           </View>
         ))}
-        <View className="footer flex-center" style={{
-          color: "#999;"
-        }}>
+        <View
+          className="footer flex-center"
+          style={{
+            color: "#999;",
+          }}
+        >
           {loading && <Text>loading...</Text>}
           {!hasMore && <Text>no more data</Text>}
         </View>
